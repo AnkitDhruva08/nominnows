@@ -1,1 +1,71 @@
 # nominnows
+
+
+nominnows/
+│
+├── backend/                     # FastAPI backend
+│   ├── app/
+│   │   ├── api/                 # All API routes (split by domain)
+│   │   │   ├── agencies/
+│   │   │   ├── auth/
+│   │   │   ├── projects/
+│   │   │   ├── proposals/
+│   │   │   ├── payments/
+│   │   │   └── messaging/
+│   │   ├── core/                # App configuration (DB, CORS, middlewares)
+│   │   ├── models/              # SQLAlchemy models
+│   │   ├── schemas/             # Pydantic schemas (request/response)
+│   │   ├── services/            # Business logic, AI helpers
+│   │   ├── utils/               # Helpers: validators, match scoring, etc.
+│   │   ├── main.py              # FastAPI entry point
+│   │   └── dependencies.py      # Common dependency injections
+│   └── tests/                   # Backend unit/integration tests
+│
+├── frontend/                    # React or Next.js frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   ├── dashboard/
+│   │   │   └── proposals/
+│   │   ├── hooks/
+│   │   ├── pages/               # For Next.js or routing views
+│   │   │   ├── dashboard/
+│   │   │   ├── projects/
+│   │   │   ├── agencies/
+│   │   │   ├── login.jsx
+│   │   │   └── index.jsx
+│   │   ├── services/            # API calls
+│   │   ├── store/               # Global state (Redux, Zustand, etc.)
+│   │   ├── styles/
+│   │   └── utils/
+│   └── tests/                   # Frontend tests
+│
+├── ai-tools/                    # AI scripts and OpenAI integration
+│   ├── agency_profile_generator.py
+│   ├── project_description_assistant.py
+│   ├── proposal_writer.py
+│   └── match_engine.py
+│
+├── automation/                  # n8n or other automation workflows
+│   └── onboarding/
+│       └── agency_intake_workflow.json
+│
+├── infra/                       # Docker, CI/CD, deployment configs
+│   ├── docker/
+│   ├── nginx/
+│   ├── docker-compose.yml
+│   └── github/
+│       └── workflows/
+│           └── ci.yml
+│
+├── docs/                        # PRD, wireframes, specs
+│   ├── PRD.md
+│   ├── wireframes/
+│   └── README.md
+│
+├── .env                         # Global env file
+├── docker-compose.yml
+├── README.md
+└── LICENSE
