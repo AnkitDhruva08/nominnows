@@ -1,53 +1,38 @@
+
+
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
 from pathlib import Path
 
-
-
-# Load .env from the backend root directory
+# Load environment variables from .env
 env_path = Path(__file__).resolve().parents[2] / ".env"
 load_dotenv(dotenv_path=env_path)
 
-# Read DB credentials
+# Read database credentials from environment
 DB_HOST = os.getenv("DB_HOST_1")
 DB_USER = os.getenv("DB_USER_1")
 DB_PASSWORD = os.getenv("DB_PASS_1")
 DB_NAME = os.getenv("DB_NAME_1")
 DB_PORT = os.getenv("DB_PORT_1")
 
-# Debug print to confirm environment variables are loaded
-print("🔍 Loaded environment variables:")
-print(f"DB_HOST_1: {DB_HOST}")
-print(f"DB_USER_1: {DB_USER}")
-print(f"DB_PASS_1: {DB_PASSWORD}")
-print(f"DB_NAME_1: {DB_NAME}")
-print(f"DB_PORT_1: {DB_PORT}")
-
-# Validate before using
+# Validate required variables
 if not all([DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT]):
-    raise ValueError("❌ One or more required DB env variables are missing.")
+    raise ValueError("❌ One or more required database environment variables are missing.")
 
-# Build connection URL
+# Construct database URL
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-# Create engine and session
-try:
-    engine = create_engine(DATABASE_URL)
-    SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
-    connection = engine.connect()
-    print("✅ Database connected successfully.")
-    connection.close()
-except Exception as e:
-    print("❌ Failed to connect to the database.")
-    print(e)
+# SQLAlchemy engine and session setup
+engine = create_engine(DATABASE_URL, echo=False)
+print("✅ Database connected successfully.", engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Base model class
+# Base class for models
 Base = declarative_base()
 
-# Dependency function
+# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:

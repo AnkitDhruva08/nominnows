@@ -69,3 +69,11 @@ nominnows/
 ├── docker-compose.yml
 ├── README.md
 └── LICENSE
+
+
+
+# FOR DROPING TABLES IN FASTAPI 
+# Base.metadata.drop_all(bind=engine) 
+
+for run the backend 
+uvicorn app.main:app --reload

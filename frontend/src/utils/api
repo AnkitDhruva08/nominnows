@@ -1,0 +1,59 @@
+
+const API_BASE_URL = "http://localhost:8000/api";
+
+// function for fetch roles 
+export const fetchRoles = async () => {
+    const res = await fetch(`${API_BASE_URL}/roles/`, {
+    });
+
+    const data = await res.json();
+    console.log('data ==<<>>', data);
+    return  data;
+  };
+
+
+
+
+  const handleResponse = async (res) => {
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+      return;
+    }
+  
+    if (!res.ok) {
+      let errorMessage = "Something went wrong";
+      try {
+        const errorData = await res.json();
+        errorMessage = errorData.detail || errorData.message || JSON.stringify(errorData);
+      } catch {
+        errorMessage = await res.text();
+      }
+      throw new Error(errorMessage);
+    }
+  
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return await res.json();
+    }
+  
+    return null;
+  };
+  
+  const getAuthHeaders = (token) => ({
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  });
+
+
+
+  export const fetchUserProfile = async (token) => {
+    const res = await fetch(`${API_BASE_URL}/auth/user-details`, {
+      method: "GET",
+      headers: getAuthHeaders(token),
+    });
+    return handleResponse(res);
+  };
+
+
+
